@@ -1,0 +1,400 @@
+:root {
+  --medflow-nav-width: 244px;
+  --medflow-nav-collapsed: 76px;
+  --medflow-nav-top: 68px;
+  --medflow-nav-accent: var(--color-primary, var(--plantao-primary, #138779));
+  --medflow-nav-ink: var(--color-ink, var(--plantao-ink, #18333b));
+  --medflow-nav-muted: var(--color-muted, var(--plantao-muted, #6b7d83));
+  --medflow-nav-border: var(--color-border, var(--plantao-border, #e1e9eb));
+  --medflow-nav-surface: var(--color-surface, #fff);
+  --medflow-nav-page: var(--color-page, #f2f5fa);
+}
+
+.medflow-has-nav {
+  display: block !important;
+  min-height: 100vh;
+  padding-top: 88px !important;
+  padding-left: calc(var(--medflow-nav-width) + 18px) !important;
+}
+
+.medflow-topbar {
+  position: fixed;
+  z-index: 1200;
+  inset: 0 0 auto var(--medflow-nav-width);
+  height: var(--medflow-nav-top);
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--medflow-nav-border);
+  background: var(--medflow-nav-surface);
+  color: var(--medflow-nav-ink);
+  font-family: inherit;
+}
+
+.medflow-nav-toggle {
+  width: 38px;
+  min-width: 38px !important;
+  height: 38px;
+  min-height: 38px !important;
+  display: grid;
+  place-items: center;
+  padding: 0 !important;
+  border: 1px solid var(--medflow-nav-border) !important;
+  border-radius: 9px !important;
+  background: var(--medflow-nav-surface) !important;
+  box-shadow: none !important;
+  color: var(--medflow-nav-ink) !important;
+  cursor: pointer;
+  font-size: 19px !important;
+}
+
+.medflow-nav-toggle:hover {
+  border-color: var(--medflow-nav-accent) !important;
+  color: var(--medflow-nav-accent) !important;
+  transform: none !important;
+}
+
+.medflow-clock {
+  color: var(--medflow-nav-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.medflow-topbar-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  min-width: 0;
+}
+
+.medflow-avatar {
+  width: 37px;
+  height: 37px;
+  flex: 0 0 37px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--medflow-nav-border);
+  border-radius: 50%;
+  background: var(--color-primary-soft, #e4f4f1);
+  color: var(--medflow-nav-accent);
+  font-size: 12px;
+  font-weight: 750;
+}
+
+.medflow-profile-copy {
+  min-width: 0;
+  max-width: 220px;
+}
+
+.medflow-profile-copy strong,
+.medflow-profile-copy small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.medflow-profile-copy strong {
+  color: var(--medflow-nav-ink);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.medflow-profile-copy small {
+  margin-top: 3px;
+  color: var(--medflow-nav-muted);
+  font-size: 10px;
+}
+
+.medflow-profile-online,
+.medflow-online-dot {
+  width: 9px;
+  height: 9px;
+  flex: 0 0 9px;
+  border: 2px solid var(--medflow-nav-surface);
+  border-radius: 50%;
+  background: #39a875;
+  box-shadow: 0 0 0 1px #39a875;
+}
+
+.medflow-notifications {
+  position: relative;
+}
+
+.medflow-notifications summary {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--medflow-nav-border);
+  border-radius: 9px;
+  background: var(--medflow-nav-surface);
+  color: var(--medflow-nav-ink);
+  cursor: pointer;
+  font-size: 17px;
+  list-style: none;
+}
+
+.medflow-notifications summary::-webkit-details-marker {
+  display: none;
+}
+
+.medflow-notifications summary:hover,
+.medflow-notifications[open] summary {
+  border-color: var(--medflow-nav-accent);
+  color: var(--medflow-nav-accent);
+}
+
+.medflow-notification-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  min-width: 17px;
+  height: 17px;
+  display: grid;
+  place-items: center;
+  padding: 0 4px;
+  border: 2px solid var(--medflow-nav-surface);
+  border-radius: 10px;
+  background: var(--medflow-nav-accent);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 750;
+}
+
+.medflow-notification-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: min(260px, calc(100vw - 24px));
+  padding: 16px;
+  border: 1px solid var(--medflow-nav-border);
+  border-radius: 12px;
+  background: var(--medflow-nav-surface);
+  box-shadow: 0 10px 28px rgba(24, 51, 59, 0.12);
+  color: var(--medflow-nav-muted);
+  font-size: 12px;
+}
+
+.medflow-logout {
+  width: auto !important;
+  min-width: 0;
+  flex: 0 0 auto;
+  min-height: 38px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 !important;
+  gap: 7px;
+  padding: 0 11px !important;
+  border: 1px solid var(--medflow-nav-border) !important;
+  border-radius: 9px !important;
+  background: var(--medflow-nav-surface) !important;
+  box-shadow: none !important;
+  color: var(--medflow-nav-muted) !important;
+  font-size: 12px !important;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.medflow-logout:hover {
+  border-color: #d7aaaa !important;
+  background: #fff8f8 !important;
+  color: #a94343 !important;
+  transform: none !important;
+}
+
+.medflow-logout > span:first-child {
+  font-size: 16px;
+}
+
+.medflow-sidebar {
+  position: fixed;
+  z-index: 1250;
+  inset: 0 auto 0 0;
+  width: var(--medflow-nav-width);
+  display: flex;
+  flex-direction: column;
+  padding: 0 13px 15px;
+  border-right: 1px solid var(--medflow-nav-border);
+  background: var(--medflow-nav-surface);
+  color: var(--medflow-nav-ink);
+  font-family: inherit;
+  transition:
+    width 0.18s ease,
+    transform 0.18s ease;
+}
+
+.medflow-sidebar-brand {
+  height: var(--medflow-nav-top);
+  display: flex;
+  flex: 0 0 var(--medflow-nav-top);
+  align-items: center;
+  gap: 10px;
+  padding: 0 5px;
+  border-bottom: 1px solid var(--medflow-nav-border);
+  color: inherit;
+  text-decoration: none;
+}
+
+.medflow-sidebar-logo {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--medflow-nav-accent);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.medflow-sidebar-brand-text strong,
+.medflow-sidebar-brand-text small {
+  display: block;
+}
+
+.medflow-sidebar-brand-text strong {
+  font-size: 14px;
+}
+
+.medflow-sidebar-brand-text small {
+  margin-top: 2px;
+  color: var(--medflow-nav-muted);
+  font-size: 10px;
+}
+
+.medflow-sidebar-caption {
+  margin: 24px 9px 10px;
+  color: var(--medflow-nav-muted);
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: 0.1em;
+}
+
+.medflow-sidebar-links {
+  display: grid;
+  align-content: start;
+  gap: 4px;
+}
+
+.medflow-sidebar-link {
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 10px;
+  border-radius: 9px;
+  color: var(--medflow-nav-muted);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    color 0.14s ease,
+    background 0.14s ease;
+}
+
+.medflow-sidebar-link:hover {
+  background: var(--color-primary-soft, #f2f7f6);
+  color: var(--medflow-nav-accent);
+}
+
+.medflow-sidebar-link.is-current {
+  background: var(--color-primary-soft, #e4f4f1);
+  color: var(--medflow-nav-accent);
+  font-weight: 750;
+}
+
+.medflow-sidebar-icon {
+  width: 23px;
+  flex: 0 0 23px;
+  text-align: center;
+  font-size: 16px;
+}
+
+.medflow-sidebar-footer {
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+  padding: 0 11px;
+  border-top: 1px solid var(--medflow-nav-border);
+  color: var(--medflow-nav-muted);
+  font-size: 10px;
+}
+
+.medflow-sidebar-footer .medflow-online-dot {
+  width: 8px;
+  height: 8px;
+  flex-basis: 8px;
+}
+
+.medflow-sidebar-backdrop {
+  display: none;
+}
+
+.medflow-menu-collapsed {
+  padding-left: calc(var(--medflow-nav-collapsed) + 18px) !important;
+}
+
+.medflow-menu-collapsed .medflow-sidebar {
+  width: var(--medflow-nav-collapsed);
+  padding-right: 9px;
+  padding-left: 9px;
+}
+
+.medflow-menu-collapsed .medflow-topbar {
+  left: var(--medflow-nav-collapsed);
+}
+
+.medflow-menu-collapsed .medflow-sidebar-brand {
+  justify-content: center;
+  padding: 0;
+}
+
+.medflow-menu-collapsed .medflow-sidebar-brand-text,
+.medflow-menu-collapsed .medflow-sidebar-caption,
+.medflow-menu-collapsed .medflow-sidebar-label {
+  display: none;
+}
+
+.medflow-menu-collapsed .medflow-sidebar-link {
+  justify-content: center;
+  padding: 0;
+}
+
+.medflow-menu-collapsed .medflow-sidebar-icon {
+  width: 100%;
+}
+
+.almox-page {
+  --medflow-nav-accent: var(--purple, #6658d3);
+  --color-primary-soft: #f1efff;
+  --color-ink: #17233c;
+  --color-muted: #71809a;
+  --color-border: #e8edf5;
+  --color-surface: #fff;
+  --color-page: #f4f7fb;
+}
+
+.almox-page .page {
+  max-width: min(1180px, 100%);
+}
+
+.medflow-has-nav .plantao-header,
+.medflow-has-nav .admin-header {
+  display: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .medflow-sidebar,
+  .medflow-sidebar-link {
+    transition: none;
+  }
+}

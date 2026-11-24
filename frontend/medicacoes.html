@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MedFlow | Medicações prescritas</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/session-ui.css" />
+  </head>
+
+  <body class="site-page medications-page">
+    <main class="container">
+      <header class="medications-header">
+        <div>
+          <p class="eyebrow">MEDFLOW · REGISTROS CLÍNICOS</p>
+          <h1>Medicações prescritas</h1>
+          <p class="medications-intro">
+            Consulte e mantenha as prescrições registradas nas consultas.
+          </p>
+        </div>
+        <button id="atualizarMedicacoes" class="button-secondary" type="button">
+          Atualizar lista
+        </button>
+      </header>
+
+      <section class="medications-toolbar" aria-label="Busca de prescrições">
+        <label for="buscaMedicacoes">Buscar por paciente, medicamento ou diagnóstico</label>
+        <input
+          id="buscaMedicacoes"
+          type="search"
+          placeholder="Digite para filtrar..."
+          autocomplete="off"
+        />
+        <p id="contadorMedicacoes" class="medications-count" aria-live="polite"></p>
+      </section>
+
+      <div id="mensagemMedicacoes" class="medications-message" role="status" aria-live="polite">
+        Carregando prescrições...
+      </div>
+      <section id="listaMedicacoes" aria-label="Lista de medicações prescritas"></section>
+
+      <section id="editorMedicacao" class="medication-editor" hidden aria-labelledby="editorTitulo">
+        <div class="editor-heading">
+          <div>
+            <p class="eyebrow">EDITAR PRESCRIÇÃO</p>
+            <h2 id="editorTitulo">Atualizar medicação</h2>
+            <p id="editorPaciente"></p>
+          </div>
+          <button id="fecharEditor" class="button-secondary" type="button">Cancelar</button>
+        </div>
+        <form id="formMedicacao" class="medication-form">
+          <input id="medicacaoId" type="hidden" />
+          <label>
+            Medicamento
+            <input id="medicacaoNome" maxlength="160" required />
+          </label>
+          <label>
+            Dose
+            <input id="medicacaoDose" maxlength="120" />
+          </label>
+          <label>
+            Frequência
+            <input id="medicacaoFrequencia" maxlength="120" />
+          </label>
+          <label>
+            Duração
+            <input id="medicacaoDuracao" maxlength="120" />
+          </label>
+          <div class="editor-actions">
+            <button id="salvarMedicacao" class="button-primary" type="submit">
+              Salvar alterações
+            </button>
+            <button id="excluirMedicacao" class="delete-button" type="button">
+              Remover medicação
+            </button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <script>
+      const lista = document.getElementById("listaMedicacoes");
+      const mensagem = document.getElementById("mensagemMedicacoes");
+      const editor = document.getElementById("editorMedicacao");
+      let medicacoes = [];
+
+      function escaparHTML(valor) {
+        return String(valor ?? "").replace(
+          /[&<>"']/g,
+          (caractere) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;"
+            })[caractere]
+        );
+      }
+
+      function dataFormatada(valor) {
+        const data = new Date(valor);
+        return Number.isNaN(data.getTime())
+          ? "Data não informada"
+          : data.toLocaleDateString("pt-BR", { dateStyle: "long" });
+      }
+
+      async function lerRespostaJson(resposta, acao) {
+        if (!(resposta.headers.get("content-type") || "").includes("application/json")) {
+          if (resposta.status === 404) {
+            throw new Error(
+              `O servidor ainda não reconhece a rota para ${acao}. Reinicie o servidor local ou publique a versão atualizada.`
+            );
+          }
+          throw new Error(`Resposta inválida do servidor ao ${acao} (HTTP ${resposta.status}).`);
+        }
+        return resposta.json();
+      }
+
+      function renderizarMedicacoes() {
+        const termo = document
+          .getElementById("buscaMedicacoes")
+          .value.trim()
+          .toLocaleLowerCase("pt-BR");
+        const filtradas = medicacoes.filter((item) =>
+          [item.paciente, item.medicacao, item.diagnostico].some((valor) =>
+            String(valor || "")
+              .toLocaleLowerCase("pt-BR")
+              .includes(termo)
+          )
+        );
+
+        document.getElementById("contadorMedicacoes").textContent =
+          `${filtradas.length} ${filtradas.length === 1 ? "prescrição encontrada" : "prescrições encontradas"}`;
+        lista.innerHTML = "";
+
+        if (!filtradas.length) {
+          mensagem.hidden = false;
+          mensagem.textContent = medicacoes.length
+            ? "Nenhuma prescrição corresponde à busca."
+            : "Nenhuma medicação prescrita foi encontrada.";
+          return;
+        }
+
+        mensagem.hidden = true;
+        filtradas.forEach((item) => {
+          const card = document.createElement("article");
+          card.className = "medication-card";
+          card.innerHTML = `
+            <div class="medication-card-heading">
+              <div>
+                <p class="medication-date">${escaparHTML(dataFormatada(item.createdAt))}</p>
+                <h2>${escaparHTML(item.medicacao)}</h2>
+              </div>
+              <span class="medication-tag">Prescrita</span>
+            </div>
+            <p class="medication-patient">${escaparHTML(item.paciente || "Paciente sem nome")}</p>
+            <dl class="medication-details">
+              <div><dt>Dose</dt><dd>${escaparHTML(item.dose || "Não informada")}</dd></div>
+              <div><dt>Frequência</dt><dd>${escaparHTML(item.frequencia || "Não informada")}</dd></div>
+              <div><dt>Duração</dt><dd>${escaparHTML(item.duracao || "Não informada")}</dd></div>
+            </dl>
+            ${item.diagnostico ? `<p class="medication-note"><b>Diagnóstico:</b> ${escaparHTML(item.diagnostico)}</p>` : ""}
+            ${item.obs ? `<p class="medication-note"><b>Observações:</b> ${escaparHTML(item.obs)}</p>` : ""}
+            <div class="medication-card-actions">
+              <button class="button-secondary edit-medication" type="button" data-id="${escaparHTML(item.id)}">Editar</button>
+              <button class="delete-button delete-medication" type="button" data-id="${escaparHTML(item.id)}">Excluir</button>
+            </div>
+          `;
+          lista.appendChild(card);
+        });
+      }
+
+      async function carregarMedicacoes() {
+        const botao = document.getElementById("atualizarMedicacoes");
+        botao.disabled = true;
+        mensagem.hidden = false;
+        mensagem.textContent = "Carregando prescrições...";
+        try {
+          const resposta = await fetch("/medicacoes", { cache: "no-store" });
+          if (!resposta.ok) throw new Error("Não foi possível carregar as prescrições.");
+          const dados = await lerRespostaJson(resposta, "atualizar a prescrição");
+          if (!Array.isArray(dados)) throw new Error("A resposta do servidor está inválida.");
+          medicacoes = dados.filter((item) => item && item.medicacao);
+          renderizarMedicacoes();
+        } catch (erro) {
+          mensagem.textContent = erro.message;
+          document.getElementById("contadorMedicacoes").textContent = "";
+        } finally {
+          botao.disabled = false;
+        }
+      }
+
+      function abrirEditor(item) {
+        document.getElementById("medicacaoId").value = item.id;
+        document.getElementById("medicacaoNome").value = item.medicacao || "";
+        document.getElementById("medicacaoDose").value = item.dose || "";
+        document.getElementById("medicacaoFrequencia").value = item.frequencia || "";
+        document.getElementById("medicacaoDuracao").value = item.duracao || "";
+        document.getElementById("editorPaciente").textContent =
+          `Paciente: ${item.paciente || "Paciente sem nome"}`;
+        editor.hidden = false;
+        editor.scrollIntoView({ behavior: "smooth", block: "start" });
+        document.getElementById("medicacaoNome").focus();
+      }
+
+      lista.addEventListener("click", (evento) => {
+        const botaoRemover = evento.target.closest(".delete-medication");
+        if (botaoRemover) {
+          void removerMedicacao(botaoRemover.dataset.id, botaoRemover);
+          return;
+        }
+        const botao = evento.target.closest(".edit-medication");
+        if (!botao) return;
+        const item = medicacoes.find((consulta) => String(consulta.id) === botao.dataset.id);
+        if (item) abrirEditor(item);
+      });
+
+      document.getElementById("formMedicacao").addEventListener("submit", async (evento) => {
+        evento.preventDefault();
+        const id = document.getElementById("medicacaoId").value;
+        const botao = document.getElementById("salvarMedicacao");
+        botao.disabled = true;
+        try {
+          const resposta = await fetch(`/medicacoes/${encodeURIComponent(id)}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              medicacao: document.getElementById("medicacaoNome").value,
+              dose: document.getElementById("medicacaoDose").value,
+              frequencia: document.getElementById("medicacaoFrequencia").value,
+              duracao: document.getElementById("medicacaoDuracao").value
+            })
+          });
+          const dados = await lerRespostaJson(resposta, "atualizar a prescrição");
+          if (!resposta.ok)
+            throw new Error(dados.erro || "Não foi possível atualizar a prescrição.");
+          editor.hidden = true;
+          await carregarMedicacoes();
+        } catch (erro) {
+          window.alert(erro.message);
+        } finally {
+          botao.disabled = false;
+        }
+      });
+
+      document.getElementById("excluirMedicacao").addEventListener("click", async () => {
+        const id = document.getElementById("medicacaoId").value;
+        await removerMedicacao(id, document.getElementById("excluirMedicacao"));
+      });
+
+      async function removerMedicacao(id, botao) {
+        if (
+          !window.confirm(
+            "Remover esta medicação da prescrição? O registro da consulta será mantido."
+          )
+        ) {
+          return;
+        }
+        botao.disabled = true;
+        try {
+          const resposta = await fetch(`/medicacoes/${encodeURIComponent(id)}`, {
+            method: "DELETE"
+          });
+          const dados = await lerRespostaJson(resposta, "remover a medicação");
+          if (!resposta.ok) throw new Error(dados.erro || "Não foi possível remover a medicação.");
+          if (document.getElementById("medicacaoId").value === String(id)) {
+            editor.hidden = true;
+          }
+          await carregarMedicacoes();
+        } catch (erro) {
+          window.alert(erro.message);
+        } finally {
+          botao.disabled = false;
+        }
+      }
+
+      document.getElementById("buscaMedicacoes").addEventListener("input", renderizarMedicacoes);
+      document.getElementById("atualizarMedicacoes").addEventListener("click", carregarMedicacoes);
+      document.getElementById("fecharEditor").addEventListener("click", () => {
+        editor.hidden = true;
+      });
+      carregarMedicacoes();
+    </script>
+    <script src="js/session-ui.js"></script>
+  </body>
+</html>

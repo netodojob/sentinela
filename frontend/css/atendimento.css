@@ -1,0 +1,255 @@
+body.site-page {
+  padding: clamp(14px, 4vw, 48px) 18px;
+}
+
+body.site-page .container {
+  width: min(820px, 100%);
+  padding: clamp(22px, 4vw, 42px);
+}
+
+.form-header {
+  margin-bottom: 28px;
+}
+
+.form-header > .button-secondary {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 14px;
+}
+
+.eyebrow,
+.step-count {
+  margin: 0 0 8px;
+  color: #138779;
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: 0.09em;
+}
+
+.form-header h2 {
+  margin: 0 0 8px;
+  font-size: clamp(28px, 4vw, 36px);
+  letter-spacing: -0.03em;
+}
+
+.form-intro,
+.step-description {
+  margin: 0;
+  color: #6b7d83;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.step-indicator {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0 0 32px;
+  padding: 0;
+  list-style: none;
+}
+
+.step-indicator-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  color: #75868b;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.step-indicator-item:not(:last-child)::after {
+  height: 2px;
+  flex: 1;
+  margin: 0 12px 0 0;
+  background: #e1e9eb;
+  content: "";
+}
+
+.step-number {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  place-items: center;
+  border: 1px solid #d7e2e4;
+  border-radius: 50%;
+  background: #fff;
+  color: #6b7d83;
+  font-size: 14px;
+}
+
+.step-indicator-item.is-active {
+  color: #176c64;
+}
+
+.step-indicator-item.is-active .step-number,
+.step-indicator-item.is-complete .step-number {
+  border-color: #138779;
+  background: #138779;
+  color: #fff;
+}
+
+.step-indicator-item.is-complete::after {
+  background: #138779;
+}
+
+.form-step h3 {
+  margin: 0 0 6px;
+  color: #18333b;
+  font-size: 21px;
+}
+
+.form-step h3:focus {
+  outline: none;
+}
+
+.step-count {
+  margin-bottom: 6px;
+  font-size: 11px;
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.field-full {
+  grid-column: 1 / -1;
+}
+
+.field label {
+  color: #304b52;
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+.field label span[aria-hidden="true"] {
+  color: #bd4d43;
+}
+
+.optional-label {
+  color: #75868b;
+  font-weight: 400;
+}
+
+body.site-page .field input,
+body.site-page .field select {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  min-height: 50px;
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid #d7e2e4;
+  border-radius: 11px;
+  background-color: #fff;
+  box-shadow: none;
+  color: #18333b;
+  font-size: 16px;
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+body.site-page .field input::placeholder {
+  color: #87979b;
+}
+
+body.site-page .field input:hover,
+body.site-page .field select:hover {
+  border-color: #b5ccca;
+}
+
+body.site-page .field input:focus,
+body.site-page .field select:focus {
+  border-color: #138779;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(19, 135, 121, 0.12);
+  transform: none;
+}
+
+body.site-page .field input[type="file"] {
+  min-height: 60px;
+  padding: 10px 12px;
+  border: 1px dashed #b8cecc;
+  background: #f7fbfa;
+  color: #526970;
+  cursor: pointer;
+}
+
+body.site-page .field input[type="file"]::file-selector-button {
+  min-height: 36px;
+  margin-right: 12px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 8px;
+  color: #176c64;
+  background: #e4f4f1;
+  font:
+    650 13px "Segoe UI",
+    Arial,
+    sans-serif;
+  cursor: pointer;
+}
+
+.form-feedback {
+  min-height: 24px;
+  margin: 18px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.form-feedback.is-pending {
+  color: #526970;
+}
+
+.form-feedback.is-success {
+  color: #176c64;
+  font-weight: 650;
+}
+
+.form-feedback.is-error {
+  color: #a33b32;
+  font-weight: 650;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+body.site-page .form-actions button {
+  min-width: 120px;
+  min-height: 48px;
+  margin: 0;
+  border-radius: 11px;
+  font-size: 15px;
+  letter-spacing: 0.01em;
+}
+
+body.site-page .form-actions button::before {
+  content: none;
+}
+
+body.site-page .form-actions button:hover {
+  transform: translateY(-1px);
+}
+
+body.site-page .form-actions button[hidden],
+.form-step[hidden] {
+  display: none;
+}

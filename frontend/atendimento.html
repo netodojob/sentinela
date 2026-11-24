@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1024" />
+    <meta name="theme-color" content="#f3f7f8" />
+    <title>MedFlow | Atendimento</title>
+    <link rel="stylesheet" href="css/atendimento.css" />
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/session-ui.css" />
+  </head>
+  <body class="site-page">
+    <main class="container">
+      <header class="form-header">
+        <p class="eyebrow">CADASTRO DE PACIENTE</p>
+        <h2>Atendimento</h2>
+        <p class="form-intro">
+          Preencha os dados em etapas. Os campos com <span aria-hidden="true">*</span> são
+          obrigatórios.
+        </p>
+        <a class="button-secondary" href="plantao.html">Ver escala de plantão</a>
+      </header>
+
+      <ol class="step-indicator" aria-label="Etapas do cadastro">
+        <li class="step-indicator-item is-active" aria-current="step">
+          <span class="step-number">1</span>
+          <span class="step-name">Dados pessoais</span>
+        </li>
+        <li class="step-indicator-item">
+          <span class="step-number">2</span>
+          <span class="step-name">Contato</span>
+        </li>
+        <li class="step-indicator-item">
+          <span class="step-number">3</span>
+          <span class="step-name">Atendimento</span>
+        </li>
+      </ol>
+
+      <form id="formCadastro" novalidate>
+        <section class="form-step" data-step="0" aria-labelledby="step-title-1">
+          <p class="step-count">ETAPA 1 DE 3</p>
+          <h3 id="step-title-1" tabindex="-1">Dados pessoais</h3>
+          <p class="step-description">Informe os dados de identificação do paciente.</p>
+          <div class="field-grid">
+            <div class="field field-full">
+              <label for="nome">Nome completo <span aria-hidden="true">*</span></label>
+              <input
+                id="nome"
+                name="nome"
+                type="text"
+                autocomplete="name"
+                placeholder="Nome completo"
+                required
+              />
+            </div>
+            <div class="field">
+              <label for="documento"
+                >CPF, RG ou outro documento <span aria-hidden="true">*</span></label
+              >
+              <input
+                id="documento"
+                name="documento"
+                type="text"
+                autocomplete="off"
+                placeholder="Número do documento"
+                required
+              />
+            </div>
+            <div class="field">
+              <label for="sexo">Sexo <span aria-hidden="true">*</span></label>
+              <select id="sexo" name="sexo" required>
+                <option value="">Selecione</option>
+                <option value="Feminino">Feminino</option>
+                <option value="Masculino">Masculino</option>
+                <option value="Outro">Outro</option>
+                <option value="Nao informado">Prefiro não informar</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="nomeMae">Nome da mãe <span aria-hidden="true">*</span></label>
+              <input id="nomeMae" name="nomeMae" type="text" placeholder="Nome da mãe" required />
+            </div>
+            <div class="field">
+              <label for="estadoCivil">Estado civil <span aria-hidden="true">*</span></label>
+              <select id="estadoCivil" name="estadoCivil" required>
+                <option value="">Selecione</option>
+                <option value="Solteiro">Solteiro(a)</option>
+                <option value="Casado">Casado(a)</option>
+                <option value="Divorciado">Divorciado(a)</option>
+                <option value="Viuvo">Viúvo(a)</option>
+                <option value="Uniao estavel">União estável</option>
+                <option value="Outro">Outro</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-step" data-step="1" aria-labelledby="step-title-2" hidden>
+          <p class="step-count">ETAPA 2 DE 3</p>
+          <h3 id="step-title-2" tabindex="-1">Contato</h3>
+          <p class="step-description">Como podemos entrar em contato com o paciente?</p>
+          <div class="field-grid">
+            <div class="field field-full">
+              <label for="endereco">Endereço completo <span aria-hidden="true">*</span></label>
+              <input
+                id="endereco"
+                name="endereco"
+                type="text"
+                autocomplete="street-address"
+                placeholder="Rua, número, bairro e cidade"
+                required
+              />
+            </div>
+            <div class="field">
+              <label for="telefone">Telefone <span aria-hidden="true">*</span></label>
+              <input
+                id="telefone"
+                name="telefone"
+                type="tel"
+                autocomplete="tel"
+                placeholder="(00) 00000-0000"
+                required
+              />
+            </div>
+            <div class="field">
+              <label for="email">E-mail <span aria-hidden="true">*</span></label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                placeholder="nome@exemplo.com"
+                required
+              />
+            </div>
+            <div class="field field-full">
+              <label for="contatoEmergencia"
+                >Contato de emergência <span aria-hidden="true">*</span></label
+              >
+              <input
+                id="contatoEmergencia"
+                name="contatoEmergencia"
+                type="text"
+                placeholder="Nome e telefone para contato"
+                required
+              />
+            </div>
+          </div>
+        </section>
+
+        <section class="form-step" data-step="2" aria-labelledby="step-title-3" hidden>
+          <p class="step-count">ETAPA 3 DE 3</p>
+          <h3 id="step-title-3" tabindex="-1">Dados do atendimento</h3>
+          <p class="step-description">Informe o tipo e o motivo da visita.</p>
+          <div class="field-grid">
+            <div class="field">
+              <label for="tipo">Tipo de atendimento</label>
+              <select id="tipo" name="tipo">
+                <option value="Convenio">Convênio</option>
+                <option value="Particular">Particular</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="motivo">Motivo do atendimento <span aria-hidden="true">*</span></label>
+              <select id="motivo" name="motivo" required>
+                <option value="">Selecione</option>
+                <option value="Consulta">Consulta</option>
+                <option value="Exame">Exame</option>
+                <option value="Retorno">Retorno</option>
+                <option value="Urgência">Urgência</option>
+                <option value="Outro">Outro</option>
+              </select>
+            </div>
+            <div class="field field-full">
+              <label for="foto"
+                >Foto do paciente <span class="optional-label">(opcional)</span></label
+              >
+              <input type="file" id="foto" name="foto" accept="image/*" />
+            </div>
+          </div>
+        </section>
+
+        <p id="formFeedback" class="form-feedback" role="status" aria-live="polite"></p>
+
+        <div class="form-actions">
+          <button id="voltarEtapa" class="button-secondary" type="button" hidden>Voltar</button>
+          <button id="proximaEtapa" type="button">Continuar</button>
+          <button id="cadastrarPaciente" type="submit" hidden>Cadastrar paciente</button>
+        </div>
+      </form>
+    </main>
+
+    <script src="js/api.js"></script>
+    <script>
+      const form = document.getElementById("formCadastro");
+      const etapas = Array.from(document.querySelectorAll(".form-step"));
+      const indicadores = Array.from(document.querySelectorAll(".step-indicator-item"));
+      const botaoVoltar = document.getElementById("voltarEtapa");
+      const botaoProxima = document.getElementById("proximaEtapa");
+      const botaoCadastrar = document.getElementById("cadastrarPaciente");
+      const feedback = document.getElementById("formFeedback");
+      let etapaAtual = 0;
+
+      function mostrarEtapa(indice) {
+        etapaAtual = indice;
+        etapas.forEach((etapa, posicao) => {
+          etapa.hidden = posicao !== etapaAtual;
+        });
+        indicadores.forEach((indicador, posicao) => {
+          indicador.classList.toggle("is-active", posicao === etapaAtual);
+          indicador.classList.toggle("is-complete", posicao < etapaAtual);
+          if (posicao === etapaAtual) {
+            indicador.setAttribute("aria-current", "step");
+          } else {
+            indicador.removeAttribute("aria-current");
+          }
+        });
+        botaoVoltar.hidden = etapaAtual === 0;
+        botaoProxima.hidden = etapaAtual === etapas.length - 1;
+        botaoCadastrar.hidden = etapaAtual !== etapas.length - 1;
+        feedback.textContent = "";
+        feedback.className = "form-feedback";
+        document.getElementById(`step-title-${etapaAtual + 1}`).focus({ preventScroll: true });
+      }
+
+      function validarEtapa(indice) {
+        const camposObrigatorios = etapas[indice].querySelectorAll("[required]");
+        for (const campo of camposObrigatorios) {
+          if (!campo.checkValidity()) {
+            campo.reportValidity();
+            return false;
+          }
+        }
+        return true;
+      }
+
+      botaoProxima.addEventListener("click", () => {
+        if (validarEtapa(etapaAtual)) {
+          mostrarEtapa(etapaAtual + 1);
+        }
+      });
+
+      botaoVoltar.addEventListener("click", () => mostrarEtapa(etapaAtual - 1));
+
+      form.addEventListener("submit", async (evento) => {
+        evento.preventDefault();
+
+        for (let indice = 0; indice < etapas.length; indice += 1) {
+          const campoInvalido = Array.from(etapas[indice].querySelectorAll("[required]")).find(
+            (campo) => !campo.checkValidity()
+          );
+          if (campoInvalido) {
+            mostrarEtapa(indice);
+            campoInvalido.reportValidity();
+            return;
+          }
+        }
+
+        botaoCadastrar.disabled = true;
+        feedback.textContent = "Enviando cadastro...";
+        feedback.className = "form-feedback is-pending";
+
+        const paciente = {
+          nome: document.getElementById("nome").value.trim(),
+          cpf: document.getElementById("documento").value.trim(),
+          documento: document.getElementById("documento").value.trim(),
+          sexo: document.getElementById("sexo").value,
+          nomeMae: document.getElementById("nomeMae").value.trim(),
+          estadoCivil: document.getElementById("estadoCivil").value,
+          endereco: document.getElementById("endereco").value.trim(),
+          telefone: document.getElementById("telefone").value.trim(),
+          email: document.getElementById("email").value.trim(),
+          contatoEmergencia: document.getElementById("contatoEmergencia").value.trim(),
+          tipo: document.getElementById("tipo").value,
+          motivo: document.getElementById("motivo").value
+        };
+
+        try {
+          await window.medflowRequest("/atendimento", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(paciente)
+          });
+
+          form.reset();
+          mostrarEtapa(0);
+          feedback.textContent = "Paciente enviado para triagem!";
+          feedback.className = "form-feedback is-success";
+        } catch (erro) {
+          console.error(erro);
+          feedback.textContent = `${erro.message} Tente novamente.`;
+          feedback.className = "form-feedback is-error";
+        } finally {
+          botaoCadastrar.disabled = false;
+        }
+      });
+    </script>
+    <script src="js/session-ui.js"></script>
+  </body>
+</html>

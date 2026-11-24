@@ -1,0 +1,257 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1024" />
+    <title>MedFlow | Entrar</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/theme.css" />
+    <style>
+      .admin-access-overlay {
+        position: fixed;
+        z-index: 2000;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        padding: 20px;
+        background: rgba(24, 51, 59, 0.54);
+      }
+
+      .admin-access-overlay[hidden] {
+        display: none;
+      }
+
+      .admin-access-card {
+        width: min(420px, 100%);
+        padding: 28px;
+        border: 1px solid var(--color-border, #e1e9eb);
+        border-radius: 18px;
+        background: var(--color-surface, #fff);
+        box-shadow: 0 18px 48px rgba(24, 51, 59, 0.2);
+        color: var(--color-ink, #18333b);
+        text-align: left;
+      }
+
+      .admin-access-card h2 {
+        margin: 0 0 8px;
+        font-size: 23px;
+      }
+
+      .admin-access-card p {
+        margin: 0 0 18px;
+        color: var(--color-muted, #6b7d83);
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .admin-access-card label {
+        display: block;
+        margin-bottom: 7px;
+        color: var(--color-ink, #18333b);
+        font-size: 13px;
+        font-weight: 650;
+      }
+
+      .admin-access-card input {
+        width: 100%;
+        min-height: 46px;
+        margin: 0 0 12px;
+        padding: 11px 13px;
+        border: 1px solid var(--color-border, #d7e2e4);
+        border-radius: 10px;
+        background: #fff;
+        color: var(--color-ink, #18333b);
+        font: inherit;
+      }
+
+      .admin-access-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 9px;
+      }
+
+      .admin-access-actions button {
+        width: auto !important;
+        min-width: 100px;
+        margin: 0 !important;
+      }
+
+      .admin-access-actions .admin-access-cancel {
+        border: 1px solid var(--color-border, #e1e9eb) !important;
+        background: var(--color-surface, #fff) !important;
+        color: var(--color-ink, #18333b) !important;
+      }
+
+      .admin-access-status {
+        min-height: 20px;
+        margin: 10px 0 0 !important;
+        color: #a94343 !important;
+        font-size: 12px !important;
+      }
+    </style>
+  </head>
+  <body class="site-page login-page">
+    <div class="container">
+      <div class="logo-box">
+        <img src="ChatGPT Image 6 de ago. de 2026, 12_54_20.png" width="330px" class="logo" />
+      </div>
+      <form id="formLogin">
+        <label for="usuario">Usuário</label>
+        <input id="usuario" name="usuario" autocomplete="username" placeholder="Usuário" required />
+        <label for="senha">Senha</label>
+        <input
+          id="senha"
+          name="senha"
+          type="password"
+          autocomplete="current-password"
+          placeholder="Senha"
+          required
+        />
+        <button id="botaoLogin" type="submit">Entrar</button>
+        <p id="loginStatus" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+    <div id="adminAccess" class="admin-access-overlay" hidden>
+      <section
+        class="admin-access-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="adminAccessTitle"
+      >
+        <h2 id="adminAccessTitle">Acesso administrativo</h2>
+        <p>Digite a senha para abrir o painel do administrador.</p>
+        <form id="adminAccessForm">
+          <label for="adminAccessPassword">Senha do administrador</label>
+          <input
+            id="adminAccessPassword"
+            type="password"
+            inputmode="numeric"
+            maxlength="4"
+            autocomplete="off"
+            required
+          />
+          <div class="admin-access-actions">
+            <button id="cancelAdminAccess" class="admin-access-cancel" type="button">
+              Cancelar
+            </button>
+            <button type="submit">Entrar</button>
+          </div>
+          <p
+            id="adminAccessStatus"
+            class="admin-access-status"
+            role="status"
+            aria-live="polite"
+          ></p>
+        </form>
+      </section>
+    </div>
+    <script src="js/api.js"></script>
+    <script>
+      document.getElementById("formLogin").addEventListener("submit", async (evento) => {
+        evento.preventDefault();
+        const formulario = evento.currentTarget;
+        const botao = document.getElementById("botaoLogin");
+        const status = document.getElementById("loginStatus");
+        botao.disabled = true;
+        status.textContent = "Verificando acesso...";
+
+        try {
+          const usuario = await window.medflowRequest("/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              usuario: formulario.elements.usuario.value.trim(),
+              senha: formulario.elements.senha.value
+            })
+          });
+
+          const paginasPorSetor = {
+            triagem: "triagem.html",
+            medico: "medico.html",
+            enfermagem: "plantao.html",
+            plantao: "plantao.html",
+            almoxarifado: "almoxerifato.html",
+            admin: "admin.html",
+            administrador: "admin.html",
+            atendimento: "atendimento.html"
+          };
+          const pagina = paginasPorSetor[usuario.tipo];
+          if (!pagina) {
+            throw new Error("Este usuário não tem um setor de acesso válido.");
+          }
+
+          try {
+            sessionStorage.setItem(
+              "medflowUsuario",
+              JSON.stringify({
+                usuario: usuario.usuario,
+                nome: usuario.nome || usuario.usuario,
+                tipo: usuario.tipo
+              })
+            );
+          } catch (erro) {
+            throw new Error(
+              "Não foi possível salvar sua sessão neste navegador. Verifique as configurações de armazenamento."
+            );
+          }
+
+          location.href = pagina;
+        } catch (erro) {
+          status.textContent = erro.message;
+          botao.disabled = false;
+        }
+      });
+      if (new URLSearchParams(location.search).get("area") === "admin") {
+        document.getElementById("loginStatus").textContent =
+          "Entre com uma conta do setor Administrador para abrir o painel.";
+      }
+      const adminAccess = document.getElementById("adminAccess");
+      const adminPassword = document.getElementById("adminAccessPassword");
+      function fecharAcessoAdmin() {
+        adminAccess.hidden = true;
+        document.getElementById("adminAccessStatus").textContent = "";
+        adminPassword.value = "";
+      }
+      document.getElementById("cancelAdminAccess").addEventListener("click", fecharAcessoAdmin);
+      adminAccess.addEventListener("click", (evento) => {
+        if (evento.target === adminAccess) fecharAcessoAdmin();
+      });
+      document.getElementById("adminAccessForm").addEventListener("submit", (evento) => {
+        evento.preventDefault();
+        if (adminPassword.value !== "2704") {
+          document.getElementById("adminAccessStatus").textContent =
+            "Senha incorreta. Tente novamente.";
+          adminPassword.value = "";
+          adminPassword.focus();
+          return;
+        }
+
+        try {
+          sessionStorage.setItem(
+            "medflowUsuario",
+            JSON.stringify({
+              usuario: "administrador",
+              nome: "Mauricio",
+              tipo: "admin"
+            })
+          );
+          location.href = "admin.html";
+        } catch (erro) {
+          document.getElementById("adminAccessStatus").textContent =
+            "Não foi possível iniciar o acesso administrativo neste navegador.";
+        }
+      });
+      window.addEventListener("keydown", (evento) => {
+        if (!evento.ctrlKey || !evento.altKey || evento.code !== "KeyA") {
+          return;
+        }
+
+        evento.preventDefault();
+        adminAccess.hidden = false;
+        adminPassword.value = "";
+        document.getElementById("adminAccessStatus").textContent = "";
+        adminPassword.focus();
+      });
+    </script>
+  </body>
+</html>

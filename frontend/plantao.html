@@ -1,0 +1,101 @@
+agr nao consigo executar com o
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1024" />
+    <meta name="theme-color" content="#f3f7f8" />
+    <title>Escala de plantão | MedFlow</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/plantao.css" />
+    <link rel="stylesheet" href="css/session-ui.css" />
+  </head>
+  <body class="site-page plantao-page">
+    <main class="plantao-shell">
+      <header class="plantao-header">
+        <div class="plantao-brand">
+          <span class="plantao-mark" aria-hidden="true">M</span>
+          <span>MedFlow <span aria-hidden="true">/</span> Equipe de plantão</span>
+        </div>
+        <nav aria-label="Navegação principal">
+          <a href="admin.html">Painel</a>
+          <a href="admin-usuarios.html">Equipe e acessos</a>
+          <a href="index.html">Sair</a>
+        </nav>
+      </header>
+
+      <section class="plantao-intro">
+        <div>
+          <p class="eyebrow">ORGANIZAÇÃO DA EQUIPE</p>
+          <h1>Escala de plantão</h1>
+          <p>Organize a cobertura de médicos e enfermagem por data e turno.</p>
+        </div>
+        <span class="schedule-badge"><span aria-hidden="true"></span> Escala compartilhada</span>
+      </section>
+
+      <div class="plantao-layout">
+        <section class="schedule-card" aria-labelledby="form-title">
+          <div class="card-heading">
+            <div>
+              <p class="eyebrow">NOVO HORÁRIO</p>
+              <h2 id="form-title">Adicionar à escala</h2>
+            </div>
+            <span class="card-icon" aria-hidden="true">+</span>
+          </div>
+          <form id="formPlantao" class="schedule-form">
+            <label for="dataPlantao">Data</label>
+            <input id="dataPlantao" name="data" type="date" required />
+
+            <label for="turnoPlantao">Turno</label>
+            <select id="turnoPlantao" name="turno" required>
+              <option value="">Selecione o turno</option>
+            </select>
+
+            <label for="medicoPlantao">Médico responsável</label>
+            <select id="medicoPlantao" name="medico" required>
+              <option value="">Carregando médicos...</option>
+            </select>
+
+            <label for="enfermeiroPlantao">Enfermeiro(a) responsável</label>
+            <select id="enfermeiroPlantao" name="enfermeiro" required>
+              <option value="">Carregando equipe de enfermagem...</option>
+            </select>
+
+            <p id="avisoEquipe" class="team-hint" role="status"></p>
+            <div class="form-actions">
+              <button id="salvarPlantao" class="button-primary" type="submit">
+                Adicionar plantão
+              </button>
+              <button id="cancelarEdicao" class="button-secondary" type="button" hidden>
+                Cancelar edição
+              </button>
+            </div>
+            <p id="statusFormulario" class="form-status" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+
+        <section class="schedule-list-card" aria-labelledby="scale-title">
+          <div class="card-heading scale-heading">
+            <div>
+              <p class="eyebrow">COBERTURA CADASTRADA</p>
+              <h2 id="scale-title">Plantões programados</h2>
+            </div>
+            <button id="atualizarEscala" class="button-secondary" type="button">Atualizar</button>
+          </div>
+          <p id="statusEscala" class="form-status" role="status" aria-live="polite">
+            Carregando escala...
+          </p>
+          <div id="listaPlantoes" class="schedule-list"></div>
+        </section>
+      </div>
+
+      <footer class="plantao-footer">
+        <span>MedFlow</span>
+        <span>Confirme a cobertura da equipe com a coordenação do hospital.</span>
+      </footer>
+    </main>
+    <script src="js/api.js" defer></script>
+    <script src="js/plantao.js" defer></script>
+    <script src="js/session-ui.js" defer></script>
+  </body>
+</html>

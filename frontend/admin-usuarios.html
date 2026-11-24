@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1024" />
+    <meta name="theme-color" content="#f3f7f8" />
+    <title>Usuários e acessos | MedFlow</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/admin.css" />
+    <link rel="stylesheet" href="css/session-ui.css" />
+    <script src="js/admin-guard.js"></script>
+  </head>
+  <body class="site-page admin-page user-admin-page">
+    <main class="admin-shell">
+      <header class="admin-header">
+        <div class="admin-brand">
+          <span class="brand-mark" aria-hidden="true">M</span>
+          <span>MedFlow <span class="brand-divider">/</span> Administração</span>
+        </div>
+        <a class="back-link" href="admin.html"
+          >Voltar ao painel <span aria-hidden="true">↗</span></a
+        >
+      </header>
+
+      <section class="welcome-panel" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">GERENCIAMENTO DA EQUIPE</p>
+          <h1 id="page-title">Usuários e acessos</h1>
+          <p class="welcome-copy">Crie contas para a equipe e gerencie os setores de acesso.</p>
+        </div>
+        <a class="button-secondary dashboard-return-link" href="admin.html"
+          >← Voltar à visão geral</a
+        >
+      </section>
+
+      <section class="admin-section user-management-section" aria-labelledby="access-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">EQUIPE</p>
+            <h2 id="access-title">Gerenciar contas</h2>
+            <p class="section-description">
+              O cadastro de usuários fica separado do painel de acompanhamento.
+            </p>
+          </div>
+        </div>
+
+        <div class="access-layout">
+          <section class="access-card create-user-card" aria-labelledby="create-user-title">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">NOVO ACESSO</p>
+                <h3 id="create-user-title">Cadastrar usuário</h3>
+              </div>
+              <span class="add-icon" aria-hidden="true">+</span>
+            </div>
+            <form id="formusuario" class="user-form">
+              <label for="nomeProfissional">Nome para exibição</label>
+              <input
+                type="text"
+                id="nomeProfissional"
+                name="nome"
+                placeholder="Ex.: Dra. Ana Souza"
+                autocomplete="name"
+                required
+              />
+
+              <label for="usuario">Nome de usuário</label>
+              <input
+                type="text"
+                id="usuario"
+                name="usuario"
+                placeholder="Ex.: maria.silva"
+                autocomplete="username"
+                required
+              />
+
+              <label for="senha">Senha</label>
+              <input
+                type="password"
+                id="senha"
+                name="senha"
+                placeholder="Crie uma senha"
+                autocomplete="new-password"
+                required
+              />
+
+              <label for="tipo">Setor de acesso</label>
+              <select id="tipo" name="tipo" required>
+                <option value="">Selecione o setor</option>
+                <option value="atendimento">Atendimento</option>
+                <option value="triagem">Triagem</option>
+                <option value="medico">Médico</option>
+                <option value="enfermagem">Enfermagem</option>
+                <option value="plantao">Plantão</option>
+                <option value="almoxarifado">Almoxarifado — estoque e medicamentos</option>
+                <option value="admin">Administrador</option>
+              </select>
+
+              <button id="botaoCadastrar" class="button-primary" type="submit">
+                Cadastrar acesso
+              </button>
+              <p id="statusCadastro" class="form-feedback" role="status" aria-live="polite"></p>
+            </form>
+          </section>
+
+          <section class="access-card users-card" aria-labelledby="users-title">
+            <div class="panel-heading users-heading">
+              <div>
+                <p class="eyebrow">CONTAS ATIVAS</p>
+                <h3 id="users-title">Equipe cadastrada</h3>
+              </div>
+              <button id="atualizarUsuarios" class="button-secondary" type="button">
+                Atualizar lista
+              </button>
+            </div>
+            <p id="statusUsuarios" class="users-feedback" role="status" aria-live="polite">
+              Carregando usuários...
+            </p>
+            <div id="listaUsuarios" class="user-list"></div>
+          </section>
+        </div>
+      </section>
+
+      <footer class="admin-footer">
+        <span>MedFlow</span>
+        <span>Gerenciamento de usuários e setores</span>
+      </footer>
+    </main>
+    <script src="js/session-ui.js" defer></script>
+    <script src="js/admin-usuarios.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "name": "hospital-system",
+  "version": "1.0.0",
+  "main": "api/index.js",
+  "scripts": {
+    "start": "node backend/server.js",
+    "test": "node --test",
+    "format": "prettier --write \"api/**/*.js\" \"backend/**/*.js\" \"frontend/**/*.{html,css,js}\" \"test/**/*.js\" \"package.json\" \"vercel.json\" \".vscode/**/*.json\" \".prettierrc.json\" \".github/**/*.yml\" \"README.md\"",
+    "format:check": "prettier --check \"api/**/*.js\" \"backend/**/*.js\" \"frontend/**/*.{html,css,js}\" \"test/**/*.js\" \"package.json\" \"vercel.json\" \".vscode/**/*.json\" \".prettierrc.json\" \".github/**/*.yml\" \"README.md\""
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  },
+  "devDependencies": {
+    "prettier": "^3.10.1"
+  }
+}

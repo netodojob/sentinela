@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1024" />
+    <meta name="theme-color" content="#f3f7f8" />
+    <title>Painel administrativo | MedFlow</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/admin.css" />
+    <link rel="stylesheet" href="css/session-ui.css" />
+    <script src="js/admin-guard.js"></script>
+  </head>
+  <body class="site-page admin-page">
+    <main class="admin-shell">
+      <header class="admin-header">
+        <div class="admin-brand">
+          <span class="brand-mark" aria-hidden="true">M</span>
+          <span>MedFlow <span class="brand-divider">/</span> Administração</span>
+        </div>
+        <a class="back-link" href="index.html"
+          >Voltar ao início <span aria-hidden="true">↗</span></a
+        >
+      </header>
+
+      <section class="welcome-panel" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">PAINEL ADMINISTRATIVO</p>
+          <h1 id="page-title">Visão geral</h1>
+          <p class="welcome-copy">Acompanhe as filas, consultas e chamadas do hospital.</p>
+        </div>
+        <a class="button-primary manage-users-link" href="admin-usuarios.html"
+          >Gerenciar usuários <span aria-hidden="true">→</span></a
+        >
+      </section>
+
+      <nav class="admin-nav" aria-label="Seções administrativas">
+        <a href="#visao-geral">Visão geral</a>
+        <a href="#mapa-atendimento">Mapa do atendimento</a>
+        <a href="plantao.html">Escala de plantão</a>
+        <a href="admin-usuarios.html">Usuários e acessos</a>
+      </nav>
+
+      <section id="visao-geral" class="admin-section" aria-labelledby="overview-title">
+        <section id="mapa-atendimento" class="flow-section" aria-labelledby="flow-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">FLUXO DO HOSPITAL</p>
+              <h2 id="flow-title">Mapa vivo do atendimento</h2>
+              <p class="section-description">
+                Veja em qual etapa cada paciente está e há quanto tempo aguarda.
+              </p>
+            </div>
+            <label class="flow-search">
+              <span>Filtrar pacientes</span>
+              <input
+                id="buscaFluxo"
+                type="search"
+                autocomplete="off"
+                placeholder="Buscar pelo nome"
+              />
+            </label>
+          </div>
+          <div id="resumoFluxo" class="flow-insights" aria-live="polite">
+            Carregando o fluxo de atendimento...
+          </div>
+          <div id="fluxoBoard" class="flow-board" aria-live="polite">
+            <p class="flow-empty">Carregando etapas...</p>
+          </div>
+        </section>
+
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">OPERAÇÃO</p>
+            <h2 id="overview-title">Resumo do hospital</h2>
+          </div>
+          <div class="dashboard-actions">
+            <p id="statusResumo" class="dashboard-feedback" role="status" aria-live="polite">
+              Carregando informações...
+            </p>
+            <button id="atualizarResumo" class="button-secondary refresh-button" type="button">
+              <span aria-hidden="true">↻</span> Atualizar painel
+            </button>
+          </div>
+        </div>
+
+        <div class="dashboard-cards">
+          <article class="dashboard-card">
+            <span class="metric-icon metric-icon-blue" aria-hidden="true">01</span>
+            <div>
+              <p>Fila do atendimento</p>
+              <strong id="aguardandoAtendimento">—</strong><small>pacientes aguardando</small>
+            </div>
+          </article>
+          <article class="dashboard-card">
+            <span class="metric-icon metric-icon-green" aria-hidden="true">02</span>
+            <div>
+              <p>Fila médica</p>
+              <strong id="aguardandoMedico">—</strong><small>pacientes aguardando</small>
+            </div>
+          </article>
+          <article class="dashboard-card">
+            <span class="metric-icon metric-icon-purple" aria-hidden="true">03</span>
+            <div>
+              <p>Consultas hoje</p>
+              <strong id="consultasHoje">—</strong><small>consultas registradas</small>
+            </div>
+          </article>
+          <article class="dashboard-card">
+            <span class="metric-icon metric-icon-orange" aria-hidden="true">04</span>
+            <div>
+              <p>Contas da equipe</p>
+              <strong id="totalUsuarios">—</strong><small>usuários cadastrados</small>
+            </div>
+          </article>
+          <article class="dashboard-card">
+            <span class="metric-icon metric-icon-blue" aria-hidden="true">05</span>
+            <div>
+              <p>Novos pacientes hoje</p>
+              <strong id="pacientesNovosHoje">—</strong><small>cadastros realizados hoje</small>
+            </div>
+          </article>
+          <article class="dashboard-card dashboard-card-priority">
+            <span class="metric-icon metric-icon-red" aria-hidden="true">06</span>
+            <div>
+              <p>Prioridade na fila médica</p>
+              <strong id="prioritariosAguardandoMedico">—</strong
+              ><small>triagens com risco vermelho</small>
+            </div>
+          </article>
+        </div>
+
+        <section class="dashboard-panel stockroom-panel" aria-labelledby="stockroom-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">ALMOXARIFADO</p>
+              <h3 id="stockroom-title">Situação do estoque</h3>
+            </div>
+            <a class="stockroom-link" href="almoxerifato.html"
+              >Abrir almoxarifado <span aria-hidden="true">↗</span></a
+            >
+          </div>
+          <div class="stockroom-summary" aria-live="polite">
+            <span><strong id="estoqueTotal">—</strong> medicamentos</span>
+            <span class="stockroom-normal"><strong id="estoqueNormal">—</strong> normais</span>
+            <span class="stockroom-low"
+              ><strong id="estoqueBaixo">—</strong> com estoque baixo</span
+            >
+            <span class="stockroom-empty"><strong id="estoqueZerado">—</strong> zerados</span>
+          </div>
+          <ul id="itensEstoqueAtencao" class="stockroom-items" aria-live="polite">
+            <li>Carregando situação do estoque...</li>
+          </ul>
+        </section>
+
+        <section class="dashboard-panel attention-panel" aria-labelledby="attention-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">ACOMPANHAMENTO</p>
+              <h3 id="attention-title">Pontos de atenção</h3>
+            </div>
+            <span class="attention-count" id="totalPontosAtencao">—</span>
+          </div>
+          <ul id="pontosAtencao" class="attention-list" aria-live="polite">
+            <li>Carregando situação das filas...</li>
+          </ul>
+        </section>
+
+        <div class="dashboard-details">
+          <section class="dashboard-panel" aria-labelledby="screens-title">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">ACOMPANHAMENTO</p>
+                <h3 id="screens-title">Situação das telas</h3>
+              </div>
+              <span class="panel-indicator" aria-hidden="true"></span>
+            </div>
+            <ul class="screen-status-list">
+              <li id="statusServidorItem" class="is-checking">
+                <span class="screen-name"><span class="screen-dot"></span>Servidor/API</span
+                ><strong id="statusServidor" class="server-status">Verificando</strong>
+              </li>
+              <li>
+                <span class="screen-name"><span class="screen-dot"></span>Atendimento</span
+                ><strong id="statusAtendimento">Carregando</strong>
+              </li>
+              <li>
+                <span class="screen-name"><span class="screen-dot"></span>Triagem</span
+                ><strong id="statusTriagem">Carregando</strong>
+              </li>
+              <li>
+                <span class="screen-name"><span class="screen-dot"></span>Médico</span
+                ><strong id="statusMedico">Carregando</strong>
+              </li>
+              <li>
+                <span class="screen-name"><span class="screen-dot"></span>Almoxarifado</span
+                ><strong id="statusAlmoxarifado">Carregando</strong>
+              </li>
+              <li>
+                <span class="screen-name"><span class="screen-dot"></span>TV de chamadas</span
+                ><strong id="statusTv">Carregando</strong>
+              </li>
+            </ul>
+            <nav class="screen-links" aria-label="Acessar telas do sistema">
+              <a href="atendimento.html">Atendimento <span aria-hidden="true">↗</span></a>
+              <a href="triagem.html">Triagem <span aria-hidden="true">↗</span></a>
+              <a href="medico.html">Médico <span aria-hidden="true">↗</span></a>
+              <a href="almoxerifato.html">Almoxarifado <span aria-hidden="true">↗</span></a>
+              <a href="tv.html">TV <span aria-hidden="true">↗</span></a>
+            </nav>
+          </section>
+
+          <section class="dashboard-panel" aria-labelledby="activity-title">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">ATIVIDADE</p>
+                <h3 id="activity-title">Últimas chamadas</h3>
+              </div>
+            </div>
+            <ul id="chamadasRecentes" class="recent-calls" aria-live="polite">
+              <li>Carregando chamadas...</li>
+            </ul>
+            <div class="operational-summary">
+              <p id="setoresUsuarios" class="dashboard-note">Usuários por setor: carregando...</p>
+              <p id="desfechosHoje" class="dashboard-note">
+                Pacientes em observação e encaminhados: carregando...
+              </p>
+            </div>
+          </section>
+        </div>
+        <p class="dashboard-updated">Última atualização: <time id="atualizadoEm">—</time></p>
+      </section>
+
+      <footer class="admin-footer">
+        <span>MedFlow</span>
+        <span>Painel administrativo · Visão somente de acompanhamento para as filas</span>
+      </footer>
+    </main>
+    <script src="js/api.js" defer></script>
+    <script src="js/session-ui.js" defer></script>
+    <script src="js/admin.js" defer></script>
+  </body>
+</html>
